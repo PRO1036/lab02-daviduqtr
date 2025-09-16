@@ -1,7 +1,7 @@
 ---
 title: "Lab 02 - Plastic waste"
-author: "Votre nom"
-date: "La date"
+author: "David Marx-Lemieux"
+date: ""
 output: github_document
 ---
 
@@ -15,21 +15,47 @@ library(tidyverse)
 plastic_waste <- read_csv("data/plastic-waste.csv")
 ```
 
+```{r - voir la table de donnée}
+glimpse(plastic_waste)
+
+```
+
 Commençons par filtrer les données pour retirer le point représenté par Trinité et Tobago (TTO) qui est un outlier.
 
 ```{r filter-data, message=FALSE}
-plastic_waste <- plastic_waste %>%
+plastic_waste %>%
   filter(plastic_waste_per_cap < 3.5)
 ```
+# nombre de ligne
 
+```{r voir-le-nombre-de-ligne}
+nrow(plastic_waste)
+```
+
+# visualisation des données par un histogramme
+```{r distribution-des-donnees}
+ggplot(data = plastic_waste, aes(x = plastic_waste_per_cap)) +
+  geom_histogram(binwidth = 0.2)
+```
+
+# identifier le pays "abberant"
+```{r identifier-pays-abberant}
+plastic_waste %>%
+  filter(plastic_waste_per_cap > 3.5)
+```
 
 ## Exercices
 
 ### Exercise 1
 
 ```{r plastic-waste-continent}
-# insert code here
+ggplot(plastic_waste %>%
+      filter(plastic_waste_per_cap < 3.5), aes(x = plastic_waste_per_cap))+
+  geom_histogram(binwidth = 0.18)+
+  facet_wrap(~ continent, ncol = 3)
 ```
+
+La quantité de déchet par habitant est représentée par l'axe des X. De ce fait, plus on s'éloigne de l'origine, plus les pays consomment des déchets. L'axe des Y représente le nombre de pays. On constate que seul quelques pays d'Amérique du Nord et d'Asie ont des moyennes de consommations de déchets par habitant plus élevées que 0,7 kg/jour. Quelques pays d'Europe et d'Amérique du Sud les suient de près. L'Afrique, avec le continent avec le plus grand nombre de pays près de l'origine, donc qui pollue peu par le plastique. L'Asie est le second continent avec le plus de pays dans la tranche la plus faible pour la quantité de déchet par habitant.
 
 ### Exercise 2
 
