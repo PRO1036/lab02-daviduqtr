@@ -96,7 +96,8 @@ plastic_waste %>%
 ggplot(plastic_waste %>%
       filter(plastic_waste_per_cap < 3.5), aes(x = plastic_waste_per_cap))+
   geom_histogram(binwidth = 0.18)+
-  facet_wrap(~ continent, ncol = 3)
+  facet_wrap(~ continent, ncol = 3)+
+  labs(title = "Nombre de pays en fonction de la quantité de déchet par habitant (Kg/jour), selon le continent")
 ```
 
 ![](lab-02_files/figure-gfm/plastic-waste-continent-1.png)<!-- -->
@@ -119,27 +120,47 @@ ggplot(plastic_waste %>%
          filter(plastic_waste_per_cap < 3.5), 
        aes(x = plastic_waste_per_cap,
            colour = continent, fill = continent))+
-        geom_density(alpha = 0.7)+
-      labs(title = "Densité du nombre de pays qui en fonction de la quantité de déchet (Kg/jour)")
+        geom_density(alpha = 0.6)+
+      labs(title = "Densité du nombre de pays qui fonction de la quantité de déchet par habitant (Kg/jour), selon le continent")
 ```
 
 ![](lab-02_files/figure-gfm/plastic-waste-density-1.png)<!-- -->
 
-Réponse à la question…
+La couleur et le remplissage (fill) se trouvent dans l’aes (estéthique)
+alors que la transparence (alpha) se retrouve dans geom_density, car la
+couleur et le remplissage sont des propriétés esthétiques, alors que la
+transparence sert à mettre en relief les différentes fonctions
+géométriques. La fonction “transparence” ne sert donc pas seulement
+l’esthétisme, mais aussi la géométrie elle-même.
 
 ### Exercise 3
 
 Boxplot:
 
 ``` r
-# insert code here
+ggplot(plastic_waste %>%
+         filter(plastic_waste_per_cap < 3.5), 
+       aes(x = continent, y = plastic_waste_per_cap,
+           colour = continent, fill = continent))+
+        geom_boxplot(alpha = 0.6)+
+      labs(title = "Génération de déchet (kg/jour) par habitant en fonction du continent")
 ```
 
-Violin plot:
+![](lab-02_files/figure-gfm/plastic-waste-boxplot-1.png)<!-- -->
 
-``` r
-# insert code here
-```
+
+    Violin plot:
+
+
+    ``` r
+    ggplot(plastic_waste %>%
+             filter(plastic_waste_per_cap < 3.5), 
+           aes(x = continent, y = plastic_waste_per_cap,
+               colour = continent, fill = continent))+
+            geom_violin(alpha = 0.6)+
+          labs(title = "Génération de déchet (kg/jour) par habitant en fonction du continent")
+
+![](lab-02_files/figure-gfm/plastic-waste-violin-1.png)<!-- -->
 
 Réponse à la question…
 
