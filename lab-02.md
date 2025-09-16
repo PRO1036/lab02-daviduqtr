@@ -115,8 +115,15 @@ quantité de déchet par habitant.
 ### Exercise 2
 
 ``` r
-# insert code here
+ggplot(plastic_waste %>%
+         filter(plastic_waste_per_cap < 3.5), 
+       aes(x = plastic_waste_per_cap,
+           colour = continent, fill = continent))+
+        geom_density(alpha = 0.7)+
+      labs(title = "Densité du nombre de pays qui en fonction de la quantité de déchet (Kg/jour)")
 ```
+
+![](lab-02_files/figure-gfm/plastic-waste-density-1.png)<!-- -->
 
 Réponse à la question…
 

@@ -60,7 +60,13 @@ La quantité de déchet par habitant est représentée par l'axe des X. De ce fa
 ### Exercise 2
 
 ```{r plastic-waste-density}
-# insert code here
+ggplot(plastic_waste %>%
+         filter(plastic_waste_per_cap < 3.5), 
+       aes(x = plastic_waste_per_cap,
+           colour = continent, fill = continent))+
+        geom_density(alpha = 0.7)+
+      labs(title = "Densité du nombre de pays qui en fonction de la quantité de déchet (Kg/jour)")
+           
 ```
 
 Réponse à la question...
