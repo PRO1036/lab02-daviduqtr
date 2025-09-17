@@ -148,46 +148,143 @@ ggplot(plastic_waste %>%
 
 ![](lab-02_files/figure-gfm/plastic-waste-boxplot-1.png)<!-- -->
 
+Violin plot:
 
-    Violin plot:
-
-
-    ``` r
-    ggplot(plastic_waste %>%
-             filter(plastic_waste_per_cap < 3.5), 
-           aes(x = continent, y = plastic_waste_per_cap,
-               colour = continent, fill = continent))+
-            geom_violin(alpha = 0.6)+
-          labs(title = "Génération de déchet (kg/jour) par habitant en fonction du continent")
+``` r
+ggplot(plastic_waste %>%
+      filter(plastic_waste_per_cap < 3.5), 
+      aes(x = continent, y = plastic_waste_per_cap,
+      colour = continent, fill = continent))+
+    geom_violin(alpha = 0.6)+
+    labs(title = "Génération de déchet (kg/jour) par habitant en fonction du continent")
+```
 
 ![](lab-02_files/figure-gfm/plastic-waste-violin-1.png)<!-- -->
 
-Réponse à la question…
+Le diagramme en violon permet une meilleure précision dans la
+visualisation de la répartition des données dans un échantillons. Ici,
+par exemple, on voit qu’en Océanie, qu’il y a deux types d’échantillon.
+Les pays qui polluent moins et les pays qui polluent plus. Mais que dans
+tous les cas, le nombre de pays qui sont de faibles pollueurs, polluent
+plus que la majorité des pays d’Afrique et d’Asie. Les résultats sont
+beaucoup plus visuels et parlant que dans les boîtes à moustaches où
+l’on pourrait simplement dire, grâce à l’écart-type, qu’il y a plus de
+pays faiblement pollueur que très polueur.
 
 ### Exercise 4
 
-``` r
-# insert code here
+``` test
+lmTemp = lm(plastic_waste_per_cap~mismanaged_plastic_waste_per_cap, data = plastic_waste)
+plot(plastic_waste)
+abline(lmTemp)
 ```
 
-Réponse à la question…
+``` r
+ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5),
+       aes(x = plastic_waste_per_cap, y = mismanaged_plastic_waste_per_cap, 
+           colour = continent))+
+      geom_point()+
+      geom_smooth(method=lm,
+                  se=FALSE)+
+      labs(title = "Quantité de déchets non gérés par les pays en fonction de la quantité de déchets produit par les habitant (kg/jour), à chaque jour")
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](lab-02_files/figure-gfm/plastic-waste-mismanaged-1.png)<!-- -->
+
+source : <http://www.cookbook-r.com/Graphs/Scatterplots_(ggplot2)/>
+
+À part les observations précédemment dit, comme le fait que les pays
+africains et asiatiques sont généralement les pays qui pollue le moins
+par habitant, on peut aussi remarqué que, généralement, ce sont ces
+derniers qui ont le plus de difficultés à gérer les déchets. On remarque
+aussi que les grands pollueurs sont ceux qui gèrent le mieux leurs
+déchets.
 
 ### Exercise 5
 
 ``` r
-# insert code here
+ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5, total_pop < 1000000000),
+      aes(x = total_pop, y = plastic_waste_per_cap))+
+      geom_point()+
+  geom_smooth(method=lm,
+                  se=FALSE)+
+      labs(title = "Quantité de déchets générés par les habitants d'un pays (kg/jour) en fonction de la population totale du pays")
 ```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](lab-02_files/figure-gfm/plastic-waste-population-total-1.png)<!-- -->
 
 ``` r
-# insert code here
+ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5),
+       aes(x = coastal_pop, y = plastic_waste_per_cap))+
+      geom_point()+
+  geom_smooth(method=lm,
+                  se=FALSE)+
+
+      labs(title = "Quantité de déchets générés par les habitants d'un pays (kg/jour) en fonction de la population vivant sur les côtes")
 ```
 
-Réponse à la question…
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](lab-02_files/figure-gfm/plastic-waste-population-coastal-1.png)<!-- -->
+
+Il ne semble pas avoir de forte corrélation, ni entre la population
+total et la quantité de polution générée, ni entre le nombre d’habitant
+côtiers et la quantité de déchets générées.
 
 ## Conclusion
 
 Recréez la visualisation:
 
 ``` r
-# insert code here
+plastic_waste <- plastic_waste %>% 
+  mutate(coastal_pop_prop = coastal_pop / total_pop)
 ```
+
+``` r
+print(plastic_waste)
+```
+
+    ## # A tibble: 240 × 11
+    ##    code  entity              continent    year gdp_per_cap plastic_waste_per_cap
+    ##    <chr> <chr>               <chr>       <dbl>       <dbl>                 <dbl>
+    ##  1 AFG   Afghanistan         Asia         2010       1614.                NA    
+    ##  2 ALB   Albania             Europe       2010       9927.                 0.069
+    ##  3 DZA   Algeria             Africa       2010      12871.                 0.144
+    ##  4 ASM   American Samoa      Oceania      2010         NA                 NA    
+    ##  5 AND   Andorra             Europe       2010         NA                 NA    
+    ##  6 AGO   Angola              Africa       2010       5898.                 0.062
+    ##  7 AIA   Anguilla            North Amer…  2010         NA                  0.252
+    ##  8 ATG   Antigua and Barbuda North Amer…  2010      19213.                 0.66 
+    ##  9 ARG   Argentina           South Amer…  2010      18712.                 0.183
+    ## 10 ARM   Armenia             Europe       2010       6703.                NA    
+    ## # ℹ 230 more rows
+    ## # ℹ 5 more variables: mismanaged_plastic_waste_per_cap <dbl>,
+    ## #   mismanaged_plastic_waste <dbl>, coastal_pop <dbl>, total_pop <dbl>,
+    ## #   coastal_pop_prop <dbl>
+
+``` r
+ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5),
+       aes(x = coastal_pop_prop, y = plastic_waste_per_cap))+
+      geom_point(aes(color = continent))+
+      geom_smooth()+
+      labs(title = "Quantité de déchets plastiques vs Proportion de la population côtière",
+          subtitle = "Selon le continent",
+           x = "Proportion de la population côtière (Coastal / total population)", y = "Nombre de déchêts plastiques par habitants",
+           colour = "Continent")
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 10 rows containing non-finite outside the scale range
+    ## (`stat_smooth()`).
+
+    ## Warning: Removed 10 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](lab-02_files/figure-gfm/recreate-viz-1.png)<!-- --> source :
+<https://www.statology.org/ratios-in-r/>
+<https://stackoverflow.com/questions/40600824/how-to-apply-geom-smooth-for-every-group>
