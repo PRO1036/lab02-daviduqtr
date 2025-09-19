@@ -264,7 +264,7 @@ print(plastic_waste)
 ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5),
        aes(x = coastal_pop_prop, y = plastic_waste_per_cap))+
       geom_point(aes(color = continent))+
-      geom_smooth()+
+      geom_smooth(color = "black")+
       labs(title = "Quantité de déchets plastiques vs Proportion de la population côtière",
           subtitle = "Selon le continent",
            x = "Proportion de la population côtière (Coastal / total population)", y = "Nombre de déchêts plastiques par habitants",
@@ -304,5 +304,3 @@ print(mediane_dechets_par_continent)
     ## 4 North America           0.252
     ## 5 Oceania                 0.144
     ## 6 South America           0.164
-
-est-ce que le commit fonctionne ? ou pas ?
