@@ -103,13 +103,6 @@ Le diagramme en violon permet une meilleure précision dans la visualisation de 
 
 ### Exercise 4
 
-```{test}
-lmTemp = lm(plastic_waste_per_cap~mismanaged_plastic_waste_per_cap, data = plastic_waste)
-plot(plastic_waste)
-abline(lmTemp)
-
-```
-
 
 ```{r plastic-waste-mismanaged}
 ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5),
@@ -181,3 +174,19 @@ ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5),
 ```
 source : https://www.statology.org/ratios-in-r/
 https://stackoverflow.com/questions/40600824/how-to-apply-geom-smooth-for-every-group
+
+
+##  calcul médiane
+```{r mediane}
+
+mediane_dechets_par_continent <- plastic_waste %>%
+  group_by(continent)%>%
+    summarise(mediane_dechets = median(plastic_waste_per_cap, na.rm = TRUE))
+```
+
+
+```{r voir-mediane}
+print(mediane_dechets_par_continent)
+```
+
+est-ce que le commit fonctionne ? ou pas ?

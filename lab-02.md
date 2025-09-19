@@ -173,12 +173,6 @@ pays faiblement pollueur que très polueur.
 
 ### Exercise 4
 
-``` test
-lmTemp = lm(plastic_waste_per_cap~mismanaged_plastic_waste_per_cap, data = plastic_waste)
-plot(plastic_waste)
-abline(lmTemp)
-```
-
 ``` r
 ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5),
        aes(x = plastic_waste_per_cap, y = mismanaged_plastic_waste_per_cap, 
@@ -288,3 +282,27 @@ ggplot(plastic_waste %>% filter(plastic_waste_per_cap < 3.5),
 ![](lab-02_files/figure-gfm/recreate-viz-1.png)<!-- --> source :
 <https://www.statology.org/ratios-in-r/>
 <https://stackoverflow.com/questions/40600824/how-to-apply-geom-smooth-for-every-group>
+
+## calcul médiane
+
+``` r
+mediane_dechets_par_continent <- plastic_waste %>%
+  group_by(continent)%>%
+    summarise(mediane_dechets = median(plastic_waste_per_cap, na.rm = TRUE))
+```
+
+``` r
+print(mediane_dechets_par_continent)
+```
+
+    ## # A tibble: 6 × 2
+    ##   continent     mediane_dechets
+    ##   <chr>                   <dbl>
+    ## 1 Africa                  0.071
+    ## 2 Asia                    0.144
+    ## 3 Europe                  0.196
+    ## 4 North America           0.252
+    ## 5 Oceania                 0.144
+    ## 6 South America           0.164
+
+est-ce que le commit fonctionne ? ou pas ?
